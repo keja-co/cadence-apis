@@ -10,3 +10,4 @@ modules:
     name: buf.build/kejaco/cadence
 deps:
   - buf.build/googleapis/googleapis
+  - buf.build/protocolbuffers/wellknowntypes
