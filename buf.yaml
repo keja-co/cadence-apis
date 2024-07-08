@@ -1,8 +1,12 @@
 version: v2
-name: buf.build/kejaco/cadence
 lint:
   use:
     - DEFAULT
 breaking:
   use:
     - FILE
+modules:
+  - path: proto
+    name: buf.build/kejaco/cadence
+deps:
+  - buf.build/googleapis/googleapis
