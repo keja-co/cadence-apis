@@ -1,12 +1,8 @@
 version: v2
+name: buf.build/kejaco/cadence
 lint:
   use:
     - DEFAULT
 breaking:
   use:
     - FILE
-modules:
-  - path: keja/scorify/
-  - name: buf.build/kejaco/cadence
-  - path: keja/users/
-  - name: buf.build/kejaco/cadence
