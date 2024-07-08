@@ -1,3 +1,302 @@
 syntax = "proto3";
 
 package keja.scorify.v1;
+
+import "keja/tenants/v1/tenants.proto";
+// import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+enum GymnasticsEventType {
+  GYMNASTICS_EVENT_TYPE_UNSPECIFIED = 0;
+  GYMNASTICS_EVENT_TYPE_FLOOR_WARMUP = 1;
+  GYMNASTICS_EVENT_TYPE_FLOOR_EXERCISE = 2;
+  GYMNASTICS_EVENT_TYPE_UNEVEN_BARS = 3;
+  GYMNASTICS_EVENT_TYPE_BALANCE_BEAM = 4;
+  GYMNASTICS_EVENT_TYPE_VAULT = 5;
+  GYMNASTICS_EVENT_TYPE_PARALLEL_BARS = 6;
+  GYMNASTICS_EVENT_TYPE_HORIZONTAL_BAR = 7;
+  GYMNASTICS_EVENT_TYPE_RINGS = 8;
+  GYMNASTICS_EVENT_TYPE_POMMEL_HORSE = 9;
+  GYMNASTICS_EVENT_TYPE_TRAMPOLINE = 10;
+  GYMNASTICS_EVENT_TYPE_RYTHMIC_GYMNASTICS = 11;
+  GYMNASTICS_EVENT_TYPE_ACROBATIC_GYMNASTICS = 12;
+  GYMNASTICS_EVENT_TYPE_AEROBIC_GYMNASTICS = 13;
+  GYMNASTICS_EVENT_TYPE_TUMBLING = 14;
+  GYMNASTICS_EVENT_TYPE_BREAK = 15;
+}
+
+message GymnasticsEvent {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  GymnasticsEventType event_type = 3;
+  string event_name = 4;
+  optional string event_description = 5;
+  optional string event_code = 6; 
+}
+
+// A Stream could also be called a "Competition Series" or "Program"
+// The end user can choose how they utilise this category
+// Australian Clubs may like to use "WAG State", "WAG Nationals", "AGC", "Futures League" etc.
+message Stream {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  optional string stream_code = 3;
+  string stream_name = 4;
+  Levels stream_levels = 5;
+}
+
+message Streams {
+  repeated Stream streams = 1;
+}
+
+// Each stream will contain multiple levels. For instance, a stream may contain levels 1-10, or levels 1-3.
+message Level {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  optional string level_code = 3;
+  string level_name = 4;
+}
+
+message Levels {
+  repeated Level levels = 1;
+}
+
+// A club is a gymnastics club. A club may have many athletes, coaches, and judges.
+message Club {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  optional string club_code = 3;
+  string club_name = 4;
+}
+
+message Clubs {
+  repeated Club clubs = 1;
+}
+
+// A person's name. This is used for athletes, coaches, and judges.
+message PersonName {
+  string first_name = 1;
+  optional string last_name = 2;
+}
+
+// A person's contact details. This is used for athletes, coaches, and judges.
+message PersonContactDetails {
+  optional string email = 1;
+  optional string phone_number = 2;
+}
+
+// A judge is a person who is responsible for scoring the athletes.
+// Judges can be associated to many (or none) clubs.
+message Judge {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  Clubs clubs = 3;
+  PersonName judge_name = 4;
+  PersonContactDetails contact_details = 5;
+}
+
+message Judges {
+  repeated Judge judges = 1;
+}
+
+// A coach is a person who is responsible for training the athletes.
+message Coach {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  Club club = 3;
+  PersonName coach_name = 4;
+  PersonContactDetails contact_details = 5;
+}
+
+message Coaches {
+  repeated Coach coaches = 1;
+}
+
+// An athlete is a person who competes in gymnastics.
+message Athlete {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  Club club = 3;
+  optional string athlete_code = 4;
+  PersonName athlete_name = 5;
+  PersonContactDetails contact_details = 6;
+  Levels athlete_levels = 7;
+}
+
+message Athletes {
+  repeated Athlete athletes = 1;
+}
+
+// A "Meet" is any competition or event where athletes compete.
+message Meet {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  string meet_name = 3;
+  google.protobuf.Timestamp meet_start_date_time = 4;
+  google.protobuf.Timestamp meet_end_date_time = 5;
+  string meet_location = 6;
+  Sessions meet_sessions = 7;
+}
+
+message Meets {
+  repeated Meet meets = 1;
+}
+
+// A Team is a group of athletes that compete together.
+message Team {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  string team_name = 3;
+  Athletes team_athletes = 4;
+}
+
+message Teams {
+  repeated Team teams = 1;
+}
+
+// A Meet (or Competition) may have multiple sessions. Each session is comprised of multiple rotations.
+message Session {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  string session_name = 3;
+  google.protobuf.Timestamp session_start_date_time = 4;
+  google.protobuf.Timestamp session_end_date_time = 5;
+  Rotations session_rotations = 6;
+  Teams session_teams = 7;
+}
+
+message Sessions {
+  repeated Session meet_sessions = 1;
+}
+
+// Each session contains multiple rotations.
+// A rotation is a list of events that athletes will compete in at that point in time.
+// For instance Rotations One Gymnasts A, B & C are competing on floor, D, E & F are on bars, G, H & I are on beam, and J, K & L are on vault.
+// The next rotation may have different athletes competing in different events.
+message Rotation {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  // Rotation Code is a unique identifier for a rotation within a session. It is printed on rotation reports.Athlete
+  // Usual examples are a numeric identifier (i.e. 1, 2, 3, 4 for a 4-rotation session).
+  // Client side apps may like to pre-fill this and hide it from the user (via way of a 'drag and drop' system).
+  // However, it is not required to be a number, and rotations could be alphanumeric (i.e. A, B, C, D).
+  string rotation_code = 3;
+  // If further identification is required, a rotation name can be used. This is a human-readable name for the rotation.
+  optional string rotation_name = 4;
+  RotationEvents session_events = 5;
+}
+
+message Rotations {
+  repeated Rotation session_rotations = 1;
+}
+
+// A participant in a rotation. This could be an athlete or a team.
+// Only one of the two fields should be populated.
+message RotationParticipant {
+  oneof participant {
+    Team team = 1;
+    Athlete athlete = 2;
+  }
+}
+
+message RotationParticipants {
+  repeated RotationParticipant rotation_participants = 1;
+}
+
+// An event is an apparatus which is being competed on. For instance, the Floor Exercise, Uneven Bars, Balance Beam, Vault, etc.
+// Each rotation will usually have multiple events.
+message RotationEvent {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  GymnasticsEvent gymnastics_event = 5;
+  RotationParticipants rotation_participants = 6;
+}
+
+message RotationEvents {
+  repeated RotationEvent rotation_events = 1;
+}
+
+// Competitions may use varying summing criteria to create an individual score
+// For instance 'one go', average of two, best of two etc
+message IndividualScoreCalculationType {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  string calculation_type_name = 3;
+  optional string calculation_type_description = 4;
+}
+
+message IndividualScoreCalculationTypes {
+  repeated IndividualScoreCalculationType individual_score_calculation_types = 1;
+}
+
+// Competitions may use varying summing criteria to create a team score
+// For instance, the sum of the top 3 scores, the sum of all scores, the sum of the top 2 scores, etc.
+// This message defines the way that the team score is calculated.
+message TeamScoreCalculationType {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  string calculation_type_name = 3;
+  optional string calculation_type_description = 4;
+}
+
+message TeamScoreCalculationTypes {
+  repeated TeamScoreCalculationType team_score_calculation_types = 1;
+}
+
+// Score for an individual athlete for an event for an individual go
+// For instance, if an athlete is competing on the vault, the score for that vault is recorded here.
+// For competitions where an athlete has multiple attempts, multiple IndividualScore will be recorded.
+// Some competitions may choose to calculate this by hand, and only input the final score.
+message IndividualAttemptEventScore {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  RotationEvent rotation_event = 3;
+  Athlete athlete = 4;
+  uint32 attempt_number = 5;
+  Judge judge = 6;
+  // The score value. This is a float value, and can be a decimal number.
+  float score_value = 7;
+  optional string score_notes = 8;
+}
+
+message IndividualAttemptEventScores {
+  repeated IndividualAttemptEventScore individual_attempt_event_scores = 1;
+}
+
+
+// This is the 'total' score for an individual athlete for an event.
+// This takes into account multiple attempts, multiple judges, etc.
+// For a one jude, one attempt competition, this will be the same as IndividualAttemptScore.
+message IndividualEventScore {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  RotationEvent rotation_event = 3;
+  Athlete athlete = 4;
+  // The score value. This is a float value, and can be a decimal number.
+  float score_value = 5;
+  IndividualScoreCalculationType score_calculation_type = 6;
+  IndividualAttemptEventScores individual_attempt_event_scores = 7;
+}
+
+message IndividualEventScores {
+  repeated IndividualEventScore individual_event_scores = 1;
+}
+
+// If participants are competing as a team, the score for the team is recorded here.
+// These are calculated from the IndividualEventScore for each athlete.
+// The score is calculated based on the TeamScoreCalculationType.
+message TeamEventScore {
+  string id = 1;
+  keja.tenants.v1.Tenant tenant = 2;
+  RotationEvent rotation_event = 3;
+  Team team = 4;
+  // The score value. This is a float value, and can be a decimal number.
+  float score_value = 5;
+  optional string score_notes = 6;
+  TeamScoreCalculationType score_calculation_type = 7;
+  IndividualEventScores individual_event_scores = 8;
+}
+
+message TeamEventScores {
+  repeated TeamEventScore team_event_scores = 1;
+}
