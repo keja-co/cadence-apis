@@ -1,0 +1,3 @@
+syntax = "proto3";
+
+package keja.scorify.v1;
