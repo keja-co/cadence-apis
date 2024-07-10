@@ -1300,6 +1300,115 @@ message GetTeamEventScoreByIdResponse {
 // Service
 
 service CadenceScorifyService {
-  rpc GetGymnasticsEventList (GetGymnasticsEventListRequest) returns (GetGymnasticsEventListResponse);
-  rpc GetStreamList (GetStreamListRequest) returns (GetStreamListResponse);
+  // Athlete
+  rpc GetAthleteList(GetAthleteListRequest) returns (GetAthleteListResponse);
+  rpc GetAthleteById(GetAthleteByIdRequest) returns (GetAthleteByIdResponse);
+  rpc UpdateAthlete(UpdateAthleteRequest) returns (UpdateAthleteResponse);
+  rpc CreateAthlete(CreateAthleteRequest) returns (CreateAthleteResponse);
+  rpc DeleteAthlete(DeleteAthleteRequest) returns (DeleteAthleteResponse);
+  rpc ArchiveAthlete(ArchiveAthleteRequest) returns (ArchiveAthleteResponse);
+
+  // Coach
+  rpc GetCoachList(GetCoachListRequest) returns (GetCoachListResponse);
+  rpc GetCoachById(GetCoachByIdRequest) returns (GetCoachByIdResponse);
+  rpc UpdateCoach(UpdateCoachRequest) returns (UpdateCoachResponse);
+  rpc CreateCoach(CreateCoachRequest) returns (CreateCoachResponse);
+  rpc DeleteCoach(DeleteCoachRequest) returns (DeleteCoachResponse);
+  rpc ArchiveCoach(ArchiveCoachRequest) returns (ArchiveCoachResponse);
+
+  // Club
+  rpc GetClubList(GetClubListRequest) returns (GetClubListResponse);
+  rpc GetClubById(GetClubByIdRequest) returns (GetClubByIdResponse);
+  rpc UpdateClub(UpdateClubRequest) returns (UpdateClubResponse);
+  rpc CreateClub(CreateClubRequest) returns (CreateClubResponse);
+  rpc DeleteClub(DeleteClubRequest) returns (DeleteClubResponse);
+  rpc ArchiveClub(ArchiveClubRequest) returns (ArchiveClubResponse);
+
+  // Gymnastics Event
+  rpc GetGymnasticsEventList(GetGymnasticsEventListRequest) returns (GetGymnasticsEventListResponse);
+  rpc GetGymnasticsEventById(GetGymnasticsEventByIdRequest) returns (GetGymnasticsEventByIdResponse);
+  rpc UpdateGymnasticsEvent(UpdateGymnasticsEventRequest) returns (UpdateGymnasticsEventResponse);
+  rpc CreateGymnasticsEvent(CreateGymnasticsEventRequest) returns (CreateGymnasticsEventResponse);
+  rpc DeleteGymnasticsEvent(DeleteGymnasticsEventRequest) returns (DeleteGymnasticsEventResponse);
+  rpc ArchiveGymnasticsEvent(ArchiveGymnasticsEventRequest) returns (ArchiveGymnasticsEventResponse);
+
+  // IndividualAttemptEventScore
+  rpc GetIndividualAttemptEventScoreList(GetIndividualAttemptEventScoreListRequest) returns (GetIndividualAttemptEventScoreListResponse);
+  rpc GetIndividualAttemptEventScoreById(GetIndividualAttemptEventScoreByIdRequest) returns (GetIndividualAttemptEventScoreByIdResponse);
+  rpc UpdateIndividualAttemptEventScore(UpdateIndividualAttemptEventScoreRequest) returns (UpdateIndividualAttemptEventScoreResponse);
+  rpc CreateIndividualAttemptEventScore(CreateIndividualAttemptEventScoreRequest) returns (CreateIndividualAttemptEventScoreResponse);
+  rpc DeleteIndividualAttemptEventScore(DeleteIndividualAttemptEventScoreRequest) returns (DeleteIndividualAttemptEventScoreResponse);
+  rpc ArchiveIndividualAttemptEventScore(ArchiveIndividualAttemptEventScoreRequest) returns (ArchiveIndividualAttemptEventScoreResponse);
+
+  // IndividualEventScore
+  rpc GetIndividualEventScoreList(GetIndividualEventScoreListRequest) returns (GetIndividualEventScoreListResponse);
+  rpc GetIndividualEventScoreById(GetIndividualEventScoreByIdRequest) returns (GetIndividualEventScoreByIdResponse);
+
+  // Judge
+  rpc GetJudgeList(GetJudgeListRequest) returns (GetJudgeListResponse);
+  rpc GetJudgeById(GetJudgeByIdRequest) returns (GetJudgeByIdResponse);
+  rpc UpdateJudge(UpdateJudgeRequest) returns (UpdateJudgeResponse);
+  rpc CreateJudge(CreateJudgeRequest) returns (CreateJudgeResponse);
+  rpc DeleteJudge(DeleteJudgeRequest) returns (DeleteJudgeResponse);
+  rpc ArchiveJudge(ArchiveJudgeRequest) returns (ArchiveJudgeResponse);
+
+  // Level
+  rpc GetLevelList(GetLevelListRequest) returns (GetLevelListResponse);
+  rpc GetLevelById(GetLevelByIdRequest) returns (GetLevelByIdResponse);
+  rpc UpdateLevel(UpdateLevelRequest) returns (UpdateLevelResponse);
+  rpc CreateLevel(CreateLevelRequest) returns (CreateLevelResponse);
+  rpc DeleteLevel(DeleteLevelRequest) returns (DeleteLevelResponse);
+  rpc ArchiveLevel(ArchiveLevelRequest) returns (ArchiveLevelResponse);
+
+  // Meet
+  rpc GetMeetList(GetMeetListRequest) returns (GetMeetListResponse);
+  rpc GetMeetById(GetMeetByIdRequest) returns (GetMeetByIdResponse);
+  rpc UpdateMeet(UpdateMeetRequest) returns (UpdateMeetResponse);
+  rpc CreateMeet(CreateMeetRequest) returns (CreateMeetResponse);
+  rpc DeleteMeet(DeleteMeetRequest) returns (DeleteMeetResponse);
+  rpc ArchiveMeet(ArchiveMeetRequest) returns (ArchiveMeetResponse);
+
+  // RotationEvent
+  rpc GetRotationEventList(GetRotationEventListRequest) returns (GetRotationEventListResponse);
+  rpc GetRotationEventById(GetRotationEventByIdRequest) returns (GetRotationEventByIdResponse);
+  rpc UpdateRotationEvent(UpdateRotationEventRequest) returns (UpdateRotationEventResponse);
+  rpc CreateRotationEvent(CreateRotationEventRequest) returns (CreateRotationEventResponse);
+  rpc DeleteRotationEvent(DeleteRotationEventRequest) returns (DeleteRotationEventResponse);
+  rpc ArchiveRotationEvent(ArchiveRotationEventRequest) returns (ArchiveRotationEventResponse);
+
+  // Rotation
+  rpc GetRotationList(GetRotationListRequest) returns (GetRotationListResponse);
+  rpc GetRotationById(GetRotationByIdRequest) returns (GetRotationByIdResponse);
+  rpc UpdateRotation(UpdateRotationRequest) returns (UpdateRotationResponse);
+  rpc CreateRotation(CreateRotationRequest) returns (CreateRotationResponse);
+  rpc DeleteRotation(DeleteRotationRequest) returns (DeleteRotationResponse);
+  rpc ArchiveRotation(ArchiveRotationRequest) returns (ArchiveRotationResponse);
+
+  // Session
+  rpc GetSessionList(GetSessionListRequest) returns (GetSessionListResponse);
+  rpc GetSessionById(GetSessionByIdRequest) returns (GetSessionByIdResponse);
+  rpc UpdateSession(UpdateSessionRequest) returns (UpdateSessionResponse);
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+  rpc ArchiveSession(ArchiveSessionRequest) returns (ArchiveSessionResponse);
+
+  // Stream
+  rpc GetStreamList(GetStreamListRequest) returns (GetStreamListResponse);
+  rpc GetStreamById(GetStreamByIdRequest) returns (GetStreamByIdResponse);
+  rpc UpdateStream(UpdateStreamRequest) returns (UpdateStreamResponse);
+  rpc CreateStream(CreateStreamRequest) returns (CreateStreamResponse);
+  rpc DeleteStream(DeleteStreamRequest) returns (DeleteStreamResponse);
+  rpc ArchiveStream(ArchiveStreamRequest) returns (ArchiveStreamResponse);
+
+  // Team
+  rpc GetTeamList(GetTeamListRequest) returns (GetTeamListResponse);
+  rpc GetTeamById(GetTeamByIdRequest) returns (GetTeamByIdResponse);
+  rpc UpdateTeam(UpdateTeamRequest) returns (UpdateTeamResponse);
+  rpc CreateTeam(CreateTeamRequest) returns (CreateTeamResponse);
+  rpc DeleteTeam(DeleteTeamRequest) returns (DeleteTeamResponse);
+  rpc ArchiveTeam(ArchiveTeamRequest) returns (ArchiveTeamResponse);
+
+  // TeamEventScore
+  rpc GetTeamEventScoreList(GetTeamEventScoreListRequest) returns (GetTeamEventScoreListResponse);
+  rpc GetTeamEventScoreById(GetTeamEventScoreByIdRequest) returns (GetTeamEventScoreByIdResponse);
 }
