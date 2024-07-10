@@ -36,6 +36,10 @@ LevelList - R
 Level - CRUDA
 MeetList - R
 Meet - CRUDA
+RotationEventsList - R
+RotationEvents - CRUDA
+RotationsList - R
+Rotations - CRUDA
 StreamList - R
 MeetList - R
 TeamList - R  

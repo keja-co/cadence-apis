@@ -933,6 +933,144 @@ message ArchiveMeetResponse {
   Meet meet = 1;
 }
 
+// Request a list of all RotationEvents.
+message GetRotationEventListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all RotationEvents.
+message GetRotationEventListResponse {
+  RotationEvents rotation_events = 1;
+}
+
+// Request a single RotationEvent.
+message GetRotationEventByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single RotationEvent.
+message GetRotationEventByIdResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Update a single RotationEvent.
+message UpdateRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  RotationEvent rotation_event = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single RotationEvent.
+message UpdateRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Create a single RotationEvent.
+message CreateRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  RotationEvent rotation_event = 2;
+}
+
+// Response of a single RotationEvent.
+message CreateRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Delete a single RotationEvent.
+message DeleteRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+}
+
+// Response of a single RotationEvent.
+message DeleteRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Archive a single RotationEvent.
+message ArchiveRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+}
+
+// Response of a single RotationEvent.
+message ArchiveRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Request a list of all Rotations.
+message GetRotationListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all Rotations.
+message GetRotationListResponse {
+  Rotations rotations = 1;
+}
+
+// Request a single Rotation.
+message GetRotationByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Rotation.
+message GetRotationByIdResponse {
+  Rotation rotation = 1;
+}
+
+// Update a single Rotation.
+message UpdateRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Rotation rotation = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Rotation.
+message UpdateRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Create a single Rotation.
+message CreateRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Rotation rotation = 2;
+}
+
+// Response of a single Rotation.
+message CreateRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Delete a single Rotation.
+message DeleteRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+}
+
+// Response of a single Rotation.
+message DeleteRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Archive a single Rotation.
+message ArchiveRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+}
+
+// Response of a single Rotation.
+message ArchiveRotationResponse {
+  Rotation rotation = 1;
+}
+
+
+
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
