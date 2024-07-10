@@ -34,6 +34,8 @@ Judge List - R
 Judge - CRUDA
 LevelList - R
 Level - CRUDA
+MeetList - R
+Meet - CRUDA
 StreamList - R
 MeetList - R
 TeamList - R  

@@ -865,6 +865,74 @@ message ArchiveLevelResponse {
   Level level = 1;
 }
 
+// Request a list of all meets (competitions).
+message GetMeetListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all meets (competitions).
+message GetMeetListResponse {
+  Meets meets = 1;
+}
+
+// Request a single meet (competition).
+message GetMeetByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single meet (competition).
+message GetMeetByIdResponse {
+  Meet meet = 1;
+}
+
+// Update a single meet (competition).
+message UpdateMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Meet meet = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single meet (competition).
+message UpdateMeetResponse {
+  Meet meet = 1;
+}
+
+// Create a single meet (competition).
+message CreateMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Meet meet = 2;
+}
+
+// Response of a single meet (competition).
+message CreateMeetResponse {
+  Meet meet = 1;
+}
+
+// Delete a single meet (competition).
+message DeleteMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+}
+
+// Response of a single meet (competition).
+message DeleteMeetResponse {
+  Meet meet = 1;
+}
+
+// Archive a single meet (competition).
+message ArchiveMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+}
+
+// Response of a single meet (competition).
+message ArchiveMeetResponse {
+  Meet meet = 1;
+}
+
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
@@ -874,17 +942,6 @@ message GetStreamListRequest {
 // Response of all streams.
 message GetStreamListResponse {
   Streams streams = 1;
-}
-
-// Request a list of all competitions.
-message GetMeetListRequest {
-  keja.tenants.v1.Tenant tenant = 1;
-  ListRequestOptions list_request_options = 2;
-}
-
-// Response of all competitions.
-message GetMeetListResponse {
-  Meets meets = 1;
 }
 
 // Request a list of all teams.
