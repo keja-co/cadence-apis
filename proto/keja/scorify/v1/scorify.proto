@@ -3,7 +3,7 @@ syntax = "proto3";
 package keja.scorify.v1;
 
 import "keja/tenants/v1/tenants.proto";
-// import "google/protobuf/field_mask.proto";
+import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
 enum GymnasticsEventType {
@@ -34,6 +34,26 @@ message GymnasticsEvent {
   optional string event_code = 6; 
 }
 
+message GymnasticsEvents {
+  repeated GymnasticsEvent gymnastics_events = 1;
+}
+
+enum StatusEnum {
+  STATUS_ENUM_UNSPECIFIED = 0;
+  STATUS_ENUM_ACTIVE = 1;
+  STATUS_ENUM_ARCHIVED = 2;
+}
+
+message Status {
+  Status status = 1;
+} 
+
+message Metadata {
+  Status status = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
 // A Stream could also be called a "Competition Series" or "Program"
 // The end user can choose how they utilise this category
 // Australian Clubs may like to use "WAG State", "WAG Nationals", "AGC", "Futures League" etc.
@@ -41,8 +61,9 @@ message Stream {
   string id = 1;
   keja.tenants.v1.Tenant tenant = 2;
   optional string stream_code = 3;
-  string stream_name = 4;
+  string stream_name = 4; 
   Levels stream_levels = 5;
+  Metadata metadata = 6;
 }
 
 message Streams {
@@ -55,6 +76,7 @@ message Level {
   keja.tenants.v1.Tenant tenant = 2;
   optional string level_code = 3;
   string level_name = 4;
+  Metadata metadata = 5;
 }
 
 message Levels {
@@ -67,6 +89,7 @@ message Club {
   keja.tenants.v1.Tenant tenant = 2;
   optional string club_code = 3;
   string club_name = 4;
+  Metadata metadata = 5;
 }
 
 message Clubs {
@@ -83,6 +106,8 @@ message PersonName {
 message PersonContactDetails {
   optional string email = 1;
   optional string phone_number = 2;
+  optional string address = 3;
+  Metadata metadata = 4;
 }
 
 // A judge is a person who is responsible for scoring the athletes.
@@ -93,6 +118,7 @@ message Judge {
   Clubs clubs = 3;
   PersonName judge_name = 4;
   PersonContactDetails contact_details = 5;
+  Metadata metadata = 6;
 }
 
 message Judges {
@@ -106,6 +132,7 @@ message Coach {
   Club club = 3;
   PersonName coach_name = 4;
   PersonContactDetails contact_details = 5;
+  Metadata metadata = 6;
 }
 
 message Coaches {
@@ -121,6 +148,7 @@ message Athlete {
   PersonName athlete_name = 5;
   PersonContactDetails contact_details = 6;
   Levels athlete_levels = 7;
+  Metadata metadata = 8;
 }
 
 message Athletes {
@@ -136,6 +164,7 @@ message Meet {
   google.protobuf.Timestamp meet_end_date_time = 5;
   string meet_location = 6;
   Sessions meet_sessions = 7;
+  Metadata metadata = 8;
 }
 
 message Meets {
@@ -148,6 +177,7 @@ message Team {
   keja.tenants.v1.Tenant tenant = 2;
   string team_name = 3;
   Athletes team_athletes = 4;
+  Metadata metadata = 5;
 }
 
 message Teams {
@@ -163,6 +193,7 @@ message Session {
   google.protobuf.Timestamp session_end_date_time = 5;
   Rotations session_rotations = 6;
   Teams session_teams = 7;
+  Metadata metadata = 8;
 }
 
 message Sessions {
@@ -184,6 +215,7 @@ message Rotation {
   // If further identification is required, a rotation name can be used. This is a human-readable name for the rotation.
   optional string rotation_name = 4;
   RotationEvents session_events = 5;
+  Metadata metadata = 6;
 }
 
 message Rotations {
@@ -210,6 +242,7 @@ message RotationEvent {
   keja.tenants.v1.Tenant tenant = 2;
   GymnasticsEvent gymnastics_event = 5;
   RotationParticipants rotation_participants = 6;
+  Metadata metadata = 7;
 }
 
 message RotationEvents {
@@ -257,6 +290,7 @@ message IndividualAttemptEventScore {
   // The score value. This is a float value, and can be a decimal number.
   float score_value = 7;
   optional string score_notes = 8;
+  Metadata metadata = 9;
 }
 
 message IndividualAttemptEventScores {
@@ -276,6 +310,7 @@ message IndividualEventScore {
   float score_value = 5;
   IndividualScoreCalculationType score_calculation_type = 6;
   IndividualAttemptEventScores individual_attempt_event_scores = 7;
+  Metadata metadata = 8;
 }
 
 message IndividualEventScores {
@@ -295,8 +330,1237 @@ message TeamEventScore {
   optional string score_notes = 6;
   TeamScoreCalculationType score_calculation_type = 7;
   IndividualEventScores individual_event_scores = 8;
+  Metadata metadata = 9;
 }
 
 message TeamEventScores {
   repeated TeamEventScore team_event_scores = 1;
+}
+
+// Request & Response Messages
+
+// Helper Messages
+
+// Options for filtering requests.
+// Filter is currently opaque and a string, but may be expanded in the future.
+// Treat as unstable.
+message FilterRequestOptions {
+  optional string filter = 1;
+}
+
+// Options for listing requests.
+// Page token is currently opaque and a string, but may be expanded in the future.
+// Treat as unstable.
+message ListRequestOptions {
+  google.protobuf.FieldMask field_mask = 1;
+  optional string page_token = 2;
+  optional FilterRequestOptions filter_request_options = 3;
+
+}
+
+// Options for general/individual requests.
+message GeneralRequestOptions {
+  google.protobuf.FieldMask field_mask = 1;
+}
+
+// Request a list of all athletes.
+
+message GetAthleteListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all athletes.
+message GetAthleteListResponse {
+  Athletes athletes = 1;
+}
+
+// Request a single athlete.
+message GetAthleteByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single athlete.
+message GetAthleteByIdResponse {
+  Athlete athlete = 1;
+}
+
+// Update a single athlete.
+message UpdateAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Athlete athlete = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single athlete.
+message UpdateAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Create a single athlete.
+message CreateAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Athlete athlete = 2;
+}
+
+// Response of a single athlete.
+message CreateAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Delete a single athlete.
+message DeleteAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+}
+
+// Response of a single athlete.
+message DeleteAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Archive a single athlete.
+message ArchiveAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+}
+
+// Response of a single athlete.
+message ArchiveAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Request a list of all clubs.
+message GetClubListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all clubs.
+message GetClubListResponse {
+  Clubs clubs = 1;
+}
+
+// Request a single club.
+message GetClubByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single club.
+message GetClubByIdResponse {
+  Club club = 1;
+}
+
+// Update a single club.
+message UpdateClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Club club = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single club.
+message UpdateClubResponse {
+  Club club = 1;
+}
+
+// Create a single club.
+message CreateClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Club club = 2;
+}
+
+// Response of a single club.
+message CreateClubResponse {
+  Club club = 1;
+}
+
+// Delete a single club.
+message DeleteClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+}
+
+// Response of a single club.
+message DeleteClubResponse {
+  Club club = 1;
+}
+
+// Archive a single club.
+message ArchiveClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+}
+
+// Response of a single club.
+message ArchiveClubResponse {
+  Club club = 1;
+}
+
+// Request a list of all coaches.
+message GetCoachListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all coaches.
+message GetCoachListResponse {
+  Coaches coaches = 1;
+}
+
+// Request a single coach.
+message GetCoachByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single coach.
+message GetCoachByIdResponse {
+  Coach coach = 1;
+}
+
+// Update a single coach.
+message UpdateCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Coach coach = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single coach.
+message UpdateCoachResponse {
+  Coach coach = 1;
+}
+
+// Create a single coach.
+message CreateCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Coach coach = 2;
+}
+
+// Response of a single coach.
+message CreateCoachResponse {
+  Coach coach = 1;
+}
+
+// Delete a single coach.
+message DeleteCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+}
+
+// Response of a single coach.
+message DeleteCoachResponse {
+  Coach coach = 1;
+}
+
+// Archive a single coach.
+message ArchiveCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+}
+
+// Response of a single coach.
+message ArchiveCoachResponse {
+  Coach coach = 1;
+}
+
+// Request a list of all gymnastics events.
+message GetGymnasticsEventListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all gymnastics events.
+message GetGymnasticsEventListResponse {
+  GymnasticsEvents gymnastics_events = 1;
+}
+
+// Request a single gymnastics event.
+message GetGymnasticsEventByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single gymnastics event.
+message GetGymnasticsEventByIdResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Update a single gymnastics event.
+message UpdateGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  GymnasticsEvent gymnastics_event = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single gymnastics event.
+message UpdateGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Create a single gymnastics event.
+message CreateGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  GymnasticsEvent gymnastics_event = 2;
+}
+
+// Response of a single gymnastics event.
+message CreateGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Delete a single gymnastics event.
+message DeleteGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+}
+
+// Response of a single gymnastics event.
+message DeleteGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Archive a single gymnastics event.
+message ArchiveGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+}
+
+// Response of a single gymnastics event.
+message ArchiveGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Request a list of all IndividualAttemptEventScores.
+message GetIndividualAttemptEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualAttemptEventScores.
+message GetIndividualAttemptEventScoreListResponse {
+  IndividualAttemptEventScores individual_attempt_event_scores = 1;
+}
+
+// Request a single IndividualAttemptEventScore.
+message GetIndividualAttemptEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message GetIndividualAttemptEventScoreByIdResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Update a single IndividualAttemptEventScore.
+message UpdateIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualAttemptEventScore individual_attempt_event_score = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message UpdateIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Create a single IndividualAttemptEventScore.
+message CreateIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualAttemptEventScore individual_attempt_event_score = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message CreateIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Delete a single IndividualAttemptEventScore.
+message DeleteIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message DeleteIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Archive a single IndividualAttemptEventScore.
+message ArchiveIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message ArchiveIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Request a list of all IndividualEventScores.
+message GetIndividualEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualEventScores.
+message GetIndividualEventScoreListResponse {
+  IndividualEventScores individual_event_scores = 1;
+}
+
+// Request a single IndividualEventScore.
+message GetIndividualEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScore.
+message GetIndividualEventScoreByIdResponse {
+  IndividualEventScore individual_event_score = 1;
+}
+
+// Request a list of all IndividualEventScoreTypes.
+message GetIndividualScoreCalculationTypeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualEventScoreTypes.
+message GetIndividualScoreCalculationTypeListResponse {
+  IndividualScoreCalculationTypes individual_score_calculation_types = 1;
+}
+
+// Request a single IndividualEventScoreType.
+message GetIndividualScoreCalculationTypeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScoreType.
+message GetIndividualScoreCalculationTypeByIdResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Update a single IndividualEventScoreType.
+message UpdateIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualScoreCalculationType individual_score_calculation_type = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScoreType.
+message UpdateIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Create a single IndividualEventScoreType.
+message CreateIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualScoreCalculationType individual_score_calculation_type = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message CreateIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Delete a single IndividualEventScoreType.
+message DeleteIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message DeleteIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Archive a single IndividualEventScoreType.
+message ArchiveIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message ArchiveIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Request a list of all Judges.
+message GetJudgeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all Judges.
+message GetJudgeListResponse {
+  Judges judges = 1;
+}
+
+// Request a single Judge.
+message GetJudgeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Judge.
+message GetJudgeByIdResponse {
+  Judge judge = 1;
+}
+
+// Update a single Judge.
+message UpdateJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Judge judge = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Judge.
+message UpdateJudgeResponse {
+  Judge judge = 1;
+}
+
+// Create a single Judge.
+message CreateJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Judge judge = 2;
+}
+
+// Response of a single Judge.
+message CreateJudgeResponse {
+  Judge judge = 1;
+}
+
+// Delete a single Judge.
+message DeleteJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+}
+
+// Response of a single Judge.
+message DeleteJudgeResponse {
+  Judge judge = 1;
+}
+
+// Archive a single Judge.
+message ArchiveJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+}
+
+// Response of a single Judge.
+message ArchiveJudgeResponse {
+  Judge judge = 1;
+}
+
+// Request a list of all levels.
+// Optionally, specify a stream to get levels for that stream.
+message GetLevelListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+  optional Stream stream = 3;
+}
+
+// Response of all levels.
+message GetLevelListResponse {
+  Levels levels = 1;
+}
+
+// Request a single level.
+message GetLevelByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single level.
+message GetLevelByIdResponse {
+  Level level = 1;
+}
+
+// Update a single level.
+message UpdateLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Level level = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single level.
+message UpdateLevelResponse {
+  Level level = 1;
+}
+
+// Create a single level.
+message CreateLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Level level = 2;
+}
+
+// Response of a single level.
+message CreateLevelResponse {
+  Level level = 1;
+}
+
+// Delete a single level.
+message DeleteLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+}
+
+// Response of a single level.
+message DeleteLevelResponse {
+  Level level = 1;
+}
+
+// Archive a single level.
+message ArchiveLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+}
+
+// Response of a single level.
+message ArchiveLevelResponse {
+  Level level = 1;
+}
+
+// Request a list of all meets (competitions).
+message GetMeetListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all meets (competitions).
+message GetMeetListResponse {
+  Meets meets = 1;
+}
+
+// Request a single meet (competition).
+message GetMeetByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single meet (competition).
+message GetMeetByIdResponse {
+  Meet meet = 1;
+}
+
+// Update a single meet (competition).
+message UpdateMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Meet meet = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single meet (competition).
+message UpdateMeetResponse {
+  Meet meet = 1;
+}
+
+// Create a single meet (competition).
+message CreateMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Meet meet = 2;
+}
+
+// Response of a single meet (competition).
+message CreateMeetResponse {
+  Meet meet = 1;
+}
+
+// Delete a single meet (competition).
+message DeleteMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+}
+
+// Response of a single meet (competition).
+message DeleteMeetResponse {
+  Meet meet = 1;
+}
+
+// Archive a single meet (competition).
+message ArchiveMeetRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string meet_id = 2;
+}
+
+// Response of a single meet (competition).
+message ArchiveMeetResponse {
+  Meet meet = 1;
+}
+
+// Request a list of all RotationEvents.
+message GetRotationEventListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all RotationEvents.
+message GetRotationEventListResponse {
+  RotationEvents rotation_events = 1;
+}
+
+// Request a single RotationEvent.
+message GetRotationEventByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single RotationEvent.
+message GetRotationEventByIdResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Update a single RotationEvent.
+message UpdateRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  RotationEvent rotation_event = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single RotationEvent.
+message UpdateRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Create a single RotationEvent.
+message CreateRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  RotationEvent rotation_event = 2;
+}
+
+// Response of a single RotationEvent.
+message CreateRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Delete a single RotationEvent.
+message DeleteRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+}
+
+// Response of a single RotationEvent.
+message DeleteRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Archive a single RotationEvent.
+message ArchiveRotationEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_event_id = 2;
+}
+
+// Response of a single RotationEvent.
+message ArchiveRotationEventResponse {
+  RotationEvent rotation_event = 1;
+}
+
+// Request a list of all Rotations.
+message GetRotationListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all Rotations.
+message GetRotationListResponse {
+  Rotations rotations = 1;
+}
+
+// Request a single Rotation.
+message GetRotationByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Rotation.
+message GetRotationByIdResponse {
+  Rotation rotation = 1;
+}
+
+// Update a single Rotation.
+message UpdateRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Rotation rotation = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Rotation.
+message UpdateRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Create a single Rotation.
+message CreateRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Rotation rotation = 2;
+}
+
+// Response of a single Rotation.
+message CreateRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Delete a single Rotation.
+message DeleteRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+}
+
+// Response of a single Rotation.
+message DeleteRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Archive a single Rotation.
+message ArchiveRotationRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string rotation_id = 2;
+}
+
+// Response of a single Rotation.
+message ArchiveRotationResponse {
+  Rotation rotation = 1;
+}
+
+// Request a list of all sessions.
+// Highly consider using ListRequestOptions to filter for a specific meet.
+message GetSessionListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 3;
+}
+
+// Response of all sessions.
+message GetSessionListResponse {
+  Sessions sessions = 1;
+}
+
+// Request a single session.
+message GetSessionByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single session.
+message GetSessionByIdResponse {
+  Session session = 1;
+}
+
+// Update a single session.
+message UpdateSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Session session = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single session.
+message UpdateSessionResponse {
+  Session session = 1;
+}
+
+// Create a single session.
+message CreateSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Session session = 2;
+}
+
+// Response of a single session.
+message CreateSessionResponse {
+  Session session = 1;
+}
+
+// Delete a single session.
+message DeleteSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+}
+
+// Response of a single session.
+message DeleteSessionResponse {
+  Session session = 1;
+}
+
+// Archive a single session.
+message ArchiveSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+}
+
+// Response of a single session.
+message ArchiveSessionResponse {
+  Session session = 1;
+}
+
+// Request a list of all streams.
+message GetStreamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all streams.
+message GetStreamListResponse {
+  Streams streams = 1;
+}
+
+// Request a single stream.
+message GetStreamByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single stream.
+message GetStreamByIdResponse {
+  Stream stream = 1;
+}
+
+// Update a single stream.
+message UpdateStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Stream stream = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single stream.
+message UpdateStreamResponse {
+  Stream stream = 1;
+}
+
+// Create a single stream.
+message CreateStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Stream stream = 2;
+}
+
+// Response of a single stream.
+message CreateStreamResponse {
+  Stream stream = 1;
+}
+
+// Delete a single stream.
+message DeleteStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+}
+
+// Response of a single stream.
+message DeleteStreamResponse {
+  Stream stream = 1;
+}
+
+// Archive a single stream.
+message ArchiveStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+}
+
+// Response of a single stream.
+message ArchiveStreamResponse {
+  Stream stream = 1;
+}
+
+// Request a list of all teams.
+message GetTeamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all teams.
+message GetTeamListResponse {
+  Teams teams = 1;
+}
+
+// Request a single team.
+message GetTeamByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team.
+message GetTeamByIdResponse {
+  Team team = 1;
+}
+
+// Update a single team.
+message UpdateTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Team team = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team.
+message UpdateTeamResponse {
+  Team team = 1;
+}
+
+// Create a single team.
+message CreateTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Team team = 2;
+}
+
+// Response of a single team.
+message CreateTeamResponse {
+  Team team = 1;
+}
+
+// Delete a single team.
+message DeleteTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+}
+
+// Response of a single team.
+message DeleteTeamResponse {
+  Team team = 1;
+}
+
+// Archive a single team.
+message ArchiveTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+}
+
+// Response of a single team.
+message ArchiveTeamResponse {
+  Team team = 1;
+}
+
+// Request a list of all team event scores.
+message GetTeamEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all team event scores.
+message GetTeamEventScoreListResponse {
+  TeamEventScores team_event_scores = 1;
+}
+
+// Request a single team event score.
+message GetTeamEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team event score.
+message GetTeamEventScoreByIdResponse {
+  TeamEventScore team_event_score = 1;
+}
+
+// Request a list of all TeamScoreCalculationType
+message GetTeamScoreCalculationTypeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all TeamScoreCalculationType
+message GetTeamScoreCalculationTypeListResponse {
+  TeamScoreCalculationTypes team_score_calculation_types = 1;
+}
+
+// Request a single TeamScoreCalculationType
+message GetTeamScoreCalculationTypeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single TeamScoreCalculationType
+message GetTeamScoreCalculationTypeByIdResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Update a single TeamScoreCalculationType
+message UpdateTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  TeamScoreCalculationType team_score_calculation_type = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single TeamScoreCalculationType
+message UpdateTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Create a single TeamScoreCalculationType
+message CreateTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  TeamScoreCalculationType team_score_calculation_type = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message CreateTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Delete a single TeamScoreCalculationType
+message DeleteTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message DeleteTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Archive a single TeamScoreCalculationType
+message ArchiveTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message ArchiveTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Service
+
+service CadenceScorifyService {
+  // Athlete
+  rpc GetAthleteList(GetAthleteListRequest) returns (GetAthleteListResponse);
+  rpc GetAthleteById(GetAthleteByIdRequest) returns (GetAthleteByIdResponse);
+  rpc UpdateAthlete(UpdateAthleteRequest) returns (UpdateAthleteResponse);
+  rpc CreateAthlete(CreateAthleteRequest) returns (CreateAthleteResponse);
+  rpc DeleteAthlete(DeleteAthleteRequest) returns (DeleteAthleteResponse);
+  rpc ArchiveAthlete(ArchiveAthleteRequest) returns (ArchiveAthleteResponse);
+
+  // Coach
+  rpc GetCoachList(GetCoachListRequest) returns (GetCoachListResponse);
+  rpc GetCoachById(GetCoachByIdRequest) returns (GetCoachByIdResponse);
+  rpc UpdateCoach(UpdateCoachRequest) returns (UpdateCoachResponse);
+  rpc CreateCoach(CreateCoachRequest) returns (CreateCoachResponse);
+  rpc DeleteCoach(DeleteCoachRequest) returns (DeleteCoachResponse);
+  rpc ArchiveCoach(ArchiveCoachRequest) returns (ArchiveCoachResponse);
+
+  // Club
+  rpc GetClubList(GetClubListRequest) returns (GetClubListResponse);
+  rpc GetClubById(GetClubByIdRequest) returns (GetClubByIdResponse);
+  rpc UpdateClub(UpdateClubRequest) returns (UpdateClubResponse);
+  rpc CreateClub(CreateClubRequest) returns (CreateClubResponse);
+  rpc DeleteClub(DeleteClubRequest) returns (DeleteClubResponse);
+  rpc ArchiveClub(ArchiveClubRequest) returns (ArchiveClubResponse);
+
+  // Gymnastics Event
+  rpc GetGymnasticsEventList(GetGymnasticsEventListRequest) returns (GetGymnasticsEventListResponse);
+  rpc GetGymnasticsEventById(GetGymnasticsEventByIdRequest) returns (GetGymnasticsEventByIdResponse);
+  rpc UpdateGymnasticsEvent(UpdateGymnasticsEventRequest) returns (UpdateGymnasticsEventResponse);
+  rpc CreateGymnasticsEvent(CreateGymnasticsEventRequest) returns (CreateGymnasticsEventResponse);
+  rpc DeleteGymnasticsEvent(DeleteGymnasticsEventRequest) returns (DeleteGymnasticsEventResponse);
+  rpc ArchiveGymnasticsEvent(ArchiveGymnasticsEventRequest) returns (ArchiveGymnasticsEventResponse);
+
+  // IndividualAttemptEventScore
+  rpc GetIndividualAttemptEventScoreList(GetIndividualAttemptEventScoreListRequest) returns (GetIndividualAttemptEventScoreListResponse);
+  rpc GetIndividualAttemptEventScoreById(GetIndividualAttemptEventScoreByIdRequest) returns (GetIndividualAttemptEventScoreByIdResponse);
+  rpc UpdateIndividualAttemptEventScore(UpdateIndividualAttemptEventScoreRequest) returns (UpdateIndividualAttemptEventScoreResponse);
+  rpc CreateIndividualAttemptEventScore(CreateIndividualAttemptEventScoreRequest) returns (CreateIndividualAttemptEventScoreResponse);
+  rpc DeleteIndividualAttemptEventScore(DeleteIndividualAttemptEventScoreRequest) returns (DeleteIndividualAttemptEventScoreResponse);
+  rpc ArchiveIndividualAttemptEventScore(ArchiveIndividualAttemptEventScoreRequest) returns (ArchiveIndividualAttemptEventScoreResponse);
+
+  // IndividualEventScore
+  rpc GetIndividualEventScoreList(GetIndividualEventScoreListRequest) returns (GetIndividualEventScoreListResponse);
+  rpc GetIndividualEventScoreById(GetIndividualEventScoreByIdRequest) returns (GetIndividualEventScoreByIdResponse);
+
+  // IndividualScoreCalculationType
+  rpc GetIndividualScoreCalculationTypeList(GetIndividualScoreCalculationTypeListRequest) returns (GetIndividualScoreCalculationTypeListResponse);
+  rpc GetIndividualScoreCalculationTypeById(GetIndividualScoreCalculationTypeByIdRequest) returns (GetIndividualScoreCalculationTypeByIdResponse);
+  rpc UpdateIndividualScoreCalculationType(UpdateIndividualScoreCalculationTypeRequest) returns (UpdateIndividualScoreCalculationTypeResponse);
+  rpc CreateIndividualScoreCalculationType(CreateIndividualScoreCalculationTypeRequest) returns (CreateIndividualScoreCalculationTypeResponse);
+  rpc DeleteIndividualScoreCalculationType(DeleteIndividualScoreCalculationTypeRequest) returns (DeleteIndividualScoreCalculationTypeResponse);
+  rpc ArchiveIndividualScoreCalculationType(ArchiveIndividualScoreCalculationTypeRequest) returns (ArchiveIndividualScoreCalculationTypeResponse);
+
+  // Judge
+  rpc GetJudgeList(GetJudgeListRequest) returns (GetJudgeListResponse);
+  rpc GetJudgeById(GetJudgeByIdRequest) returns (GetJudgeByIdResponse);
+  rpc UpdateJudge(UpdateJudgeRequest) returns (UpdateJudgeResponse);
+  rpc CreateJudge(CreateJudgeRequest) returns (CreateJudgeResponse);
+  rpc DeleteJudge(DeleteJudgeRequest) returns (DeleteJudgeResponse);
+  rpc ArchiveJudge(ArchiveJudgeRequest) returns (ArchiveJudgeResponse);
+
+  // Level
+  rpc GetLevelList(GetLevelListRequest) returns (GetLevelListResponse);
+  rpc GetLevelById(GetLevelByIdRequest) returns (GetLevelByIdResponse);
+  rpc UpdateLevel(UpdateLevelRequest) returns (UpdateLevelResponse);
+  rpc CreateLevel(CreateLevelRequest) returns (CreateLevelResponse);
+  rpc DeleteLevel(DeleteLevelRequest) returns (DeleteLevelResponse);
+  rpc ArchiveLevel(ArchiveLevelRequest) returns (ArchiveLevelResponse);
+
+  // Meet
+  rpc GetMeetList(GetMeetListRequest) returns (GetMeetListResponse);
+  rpc GetMeetById(GetMeetByIdRequest) returns (GetMeetByIdResponse);
+  rpc UpdateMeet(UpdateMeetRequest) returns (UpdateMeetResponse);
+  rpc CreateMeet(CreateMeetRequest) returns (CreateMeetResponse);
+  rpc DeleteMeet(DeleteMeetRequest) returns (DeleteMeetResponse);
+  rpc ArchiveMeet(ArchiveMeetRequest) returns (ArchiveMeetResponse);
+
+  // RotationEvent
+  rpc GetRotationEventList(GetRotationEventListRequest) returns (GetRotationEventListResponse);
+  rpc GetRotationEventById(GetRotationEventByIdRequest) returns (GetRotationEventByIdResponse);
+  rpc UpdateRotationEvent(UpdateRotationEventRequest) returns (UpdateRotationEventResponse);
+  rpc CreateRotationEvent(CreateRotationEventRequest) returns (CreateRotationEventResponse);
+  rpc DeleteRotationEvent(DeleteRotationEventRequest) returns (DeleteRotationEventResponse);
+  rpc ArchiveRotationEvent(ArchiveRotationEventRequest) returns (ArchiveRotationEventResponse);
+
+  // Rotation
+  rpc GetRotationList(GetRotationListRequest) returns (GetRotationListResponse);
+  rpc GetRotationById(GetRotationByIdRequest) returns (GetRotationByIdResponse);
+  rpc UpdateRotation(UpdateRotationRequest) returns (UpdateRotationResponse);
+  rpc CreateRotation(CreateRotationRequest) returns (CreateRotationResponse);
+  rpc DeleteRotation(DeleteRotationRequest) returns (DeleteRotationResponse);
+  rpc ArchiveRotation(ArchiveRotationRequest) returns (ArchiveRotationResponse);
+
+  // Session
+  rpc GetSessionList(GetSessionListRequest) returns (GetSessionListResponse);
+  rpc GetSessionById(GetSessionByIdRequest) returns (GetSessionByIdResponse);
+  rpc UpdateSession(UpdateSessionRequest) returns (UpdateSessionResponse);
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+  rpc ArchiveSession(ArchiveSessionRequest) returns (ArchiveSessionResponse);
+
+  // Stream
+  rpc GetStreamList(GetStreamListRequest) returns (GetStreamListResponse);
+  rpc GetStreamById(GetStreamByIdRequest) returns (GetStreamByIdResponse);
+  rpc UpdateStream(UpdateStreamRequest) returns (UpdateStreamResponse);
+  rpc CreateStream(CreateStreamRequest) returns (CreateStreamResponse);
+  rpc DeleteStream(DeleteStreamRequest) returns (DeleteStreamResponse);
+  rpc ArchiveStream(ArchiveStreamRequest) returns (ArchiveStreamResponse);
+
+  // Team
+  rpc GetTeamList(GetTeamListRequest) returns (GetTeamListResponse);
+  rpc GetTeamById(GetTeamByIdRequest) returns (GetTeamByIdResponse);
+  rpc UpdateTeam(UpdateTeamRequest) returns (UpdateTeamResponse);
+  rpc CreateTeam(CreateTeamRequest) returns (CreateTeamResponse);
+  rpc DeleteTeam(DeleteTeamRequest) returns (DeleteTeamResponse);
+  rpc ArchiveTeam(ArchiveTeamRequest) returns (ArchiveTeamResponse);
+
+  // TeamEventScore
+  rpc GetTeamEventScoreList(GetTeamEventScoreListRequest) returns (GetTeamEventScoreListResponse);
+  rpc GetTeamEventScoreById(GetTeamEventScoreByIdRequest) returns (GetTeamEventScoreByIdResponse);
+
+  // TeamScoreCalculationType
+  rpc GetTeamScoreCalculationTypeList(GetTeamScoreCalculationTypeListRequest) returns (GetTeamScoreCalculationTypeListResponse);
+  rpc GetTeamScoreCalculationTypeById(GetTeamScoreCalculationTypeByIdRequest) returns (GetTeamScoreCalculationTypeByIdResponse);
+  rpc UpdateTeamScoreCalculationType(UpdateTeamScoreCalculationTypeRequest) returns (UpdateTeamScoreCalculationTypeResponse);
+  rpc CreateTeamScoreCalculationType(CreateTeamScoreCalculationTypeRequest) returns (CreateTeamScoreCalculationTypeResponse);
+  rpc DeleteTeamScoreCalculationType(DeleteTeamScoreCalculationTypeRequest) returns (DeleteTeamScoreCalculationTypeResponse);
+  rpc ArchiveTeamScoreCalculationType(ArchiveTeamScoreCalculationTypeRequest) returns (ArchiveTeamScoreCalculationTypeResponse);
 }
