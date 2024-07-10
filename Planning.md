@@ -26,6 +26,8 @@ Club List - R
 Club - CRUDA
 GymnasticsEventList - R
 GymnasticsEvent - CRUDA
+IndividualAttemptEventScoresList - R
+IndividualAttemptEventScores - CRUDA
 StreamList - R
 LevelList - R
 MeetList - R

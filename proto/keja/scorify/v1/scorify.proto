@@ -636,6 +636,74 @@ message ArchiveGymnasticsEventResponse {
   GymnasticsEvent gymnastics_event = 1;
 }
 
+// Request a list of all IndividualAttemptEventScores.
+message GetIndividualAttemptEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualAttemptEventScores.
+message GetIndividualAttemptEventScoreListResponse {
+  IndividualAttemptEventScores individual_attempt_event_scores = 1;
+}
+
+// Request a single IndividualAttemptEventScore.
+message GetIndividualAttemptEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message GetIndividualAttemptEventScoreByIdResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Update a single IndividualAttemptEventScore.
+message UpdateIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualAttemptEventScore individual_attempt_event_score = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message UpdateIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Create a single IndividualAttemptEventScore.
+message CreateIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualAttemptEventScore individual_attempt_event_score = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message CreateIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Delete a single IndividualAttemptEventScore.
+message DeleteIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message DeleteIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
+// Archive a single IndividualAttemptEventScore.
+message ArchiveIndividualAttemptEventScoreRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_attempt_event_score_id = 2;
+}
+
+// Response of a single IndividualAttemptEventScore.
+message ArchiveIndividualAttemptEventScoreResponse {
+  IndividualAttemptEventScore individual_attempt_event_score = 1;
+}
+
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
