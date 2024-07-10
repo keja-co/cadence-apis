@@ -34,6 +34,22 @@ message GymnasticsEvent {
   optional string event_code = 6; 
 }
 
+enum StatusEnum {
+  STATUS_ENUM_UNSPECIFIED = 0;
+  STATUS_ENUM_ACTIVE = 1;
+  STATUS_ENUM_ARCHIVED = 2;
+}
+
+message Status {
+  Status status = 1;
+} 
+
+message Metadata {
+  Status status = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
 // A Stream could also be called a "Competition Series" or "Program"
 // The end user can choose how they utilise this category
 // Australian Clubs may like to use "WAG State", "WAG Nationals", "AGC", "Futures League" etc.
@@ -41,8 +57,9 @@ message Stream {
   string id = 1;
   keja.tenants.v1.Tenant tenant = 2;
   optional string stream_code = 3;
-  string stream_name = 4;
+  string stream_name = 4; 
   Levels stream_levels = 5;
+  Metadata metadata = 6;
 }
 
 message Streams {
@@ -55,6 +72,7 @@ message Level {
   keja.tenants.v1.Tenant tenant = 2;
   optional string level_code = 3;
   string level_name = 4;
+  Metadata metadata = 5;
 }
 
 message Levels {
@@ -67,6 +85,7 @@ message Club {
   keja.tenants.v1.Tenant tenant = 2;
   optional string club_code = 3;
   string club_name = 4;
+  Metadata metadata = 5;
 }
 
 message Clubs {
@@ -83,6 +102,8 @@ message PersonName {
 message PersonContactDetails {
   optional string email = 1;
   optional string phone_number = 2;
+  optional string address = 3;
+  Metadata metadata = 4;
 }
 
 // A judge is a person who is responsible for scoring the athletes.
@@ -93,6 +114,7 @@ message Judge {
   Clubs clubs = 3;
   PersonName judge_name = 4;
   PersonContactDetails contact_details = 5;
+  Metadata metadata = 6;
 }
 
 message Judges {
@@ -106,6 +128,7 @@ message Coach {
   Club club = 3;
   PersonName coach_name = 4;
   PersonContactDetails contact_details = 5;
+  Metadata metadata = 6;
 }
 
 message Coaches {
@@ -121,6 +144,7 @@ message Athlete {
   PersonName athlete_name = 5;
   PersonContactDetails contact_details = 6;
   Levels athlete_levels = 7;
+  Metadata metadata = 8;
 }
 
 message Athletes {
@@ -136,6 +160,7 @@ message Meet {
   google.protobuf.Timestamp meet_end_date_time = 5;
   string meet_location = 6;
   Sessions meet_sessions = 7;
+  Metadata metadata = 8;
 }
 
 message Meets {
@@ -148,6 +173,7 @@ message Team {
   keja.tenants.v1.Tenant tenant = 2;
   string team_name = 3;
   Athletes team_athletes = 4;
+  Metadata metadata = 5;
 }
 
 message Teams {
@@ -163,6 +189,7 @@ message Session {
   google.protobuf.Timestamp session_end_date_time = 5;
   Rotations session_rotations = 6;
   Teams session_teams = 7;
+  Metadata metadata = 8;
 }
 
 message Sessions {
@@ -184,6 +211,7 @@ message Rotation {
   // If further identification is required, a rotation name can be used. This is a human-readable name for the rotation.
   optional string rotation_name = 4;
   RotationEvents session_events = 5;
+  Metadata metadata = 6;
 }
 
 message Rotations {
@@ -210,6 +238,7 @@ message RotationEvent {
   keja.tenants.v1.Tenant tenant = 2;
   GymnasticsEvent gymnastics_event = 5;
   RotationParticipants rotation_participants = 6;
+  Metadata metadata = 7;
 }
 
 message RotationEvents {
@@ -257,6 +286,7 @@ message IndividualAttemptEventScore {
   // The score value. This is a float value, and can be a decimal number.
   float score_value = 7;
   optional string score_notes = 8;
+  Metadata metadata = 9;
 }
 
 message IndividualAttemptEventScores {
@@ -276,6 +306,7 @@ message IndividualEventScore {
   float score_value = 5;
   IndividualScoreCalculationType score_calculation_type = 6;
   IndividualAttemptEventScores individual_attempt_event_scores = 7;
+  Metadata metadata = 8;
 }
 
 message IndividualEventScores {
@@ -295,8 +326,172 @@ message TeamEventScore {
   optional string score_notes = 6;
   TeamScoreCalculationType score_calculation_type = 7;
   IndividualEventScores individual_event_scores = 8;
+  Metadata metadata = 9;
 }
 
 message TeamEventScores {
   repeated TeamEventScore team_event_scores = 1;
+}
+
+// Request & Response Messages
+
+// Helper Messages
+
+// Options for filtering requests.
+// Filter is currently opaque and a string, but may be expanded in the future.
+// Treat as unstable.
+message FilterRequestOptions {
+  optional string filter = 1;
+}
+
+// Options for listing requests.
+// Page token is currently opaque and a string, but may be expanded in the future.
+// Treat as unstable.
+message ListRequestOptions {
+  google.protobuf.FieldMask field_mask = 1;
+  optional string page_token = 2;
+  optional FilterRequestOptions filter_request_options = 3;
+
+}
+
+// Options for general/individual requests.
+message GeneralRequestOptions {
+  google.protobuf.FieldMask field_mask = 1;
+}
+
+// Request a list of all athletes.
+
+message GetAthleteListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all athletes.
+message GetAthleteListResponse {
+  Athletes athletes = 1;
+}
+
+// Request a single athlete.
+message GetAthleteByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single athlete.
+message GetAthleteByIdResponse {
+  Athlete athlete = 1;
+}
+
+// Update a single athlete.
+message UpdateAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Athlete athlete = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single athlete.
+message UpdateAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Create a single athlete.
+message CreateAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Athlete athlete = 2;
+}
+
+// Response of a single athlete.
+message CreateAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Delete a single athlete.
+message DeleteAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+}
+
+// Response of a single athlete.
+message DeleteAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Archive a single athlete.
+message ArchiveAthleteRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string athlete_id = 2;
+}
+
+// Response of a single athlete.
+message ArchiveAthleteResponse {
+  Athlete athlete = 1;
+}
+
+// Request a list of all gymnastics events.
+message GetGymnasticsEventListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all gymnastics events.
+message GetGymnasticsEventListResponse {
+  GymnasticsEvents gymnastics_events = 1;
+}
+
+// Request a list of all streams.
+message GetStreamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all streams.
+message GetStreamListResponse {
+  Streams streams = 1;
+}
+
+// Request a list of all levels.
+// Optionally, specify a stream to get levels for that stream.
+message GetLevelListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+  optional Stream stream = 3;
+}
+
+// Response of all levels.
+message GetLevelListResponse {
+  Levels levels = 1;
+}
+
+// Request a list of all competitions.
+message GetMeetListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all competitions.
+message GetMeetListResponse {
+  Meets meets = 1;
+}
+
+// Request a list of all teams.
+// Requires a meet to be specified.
+// Optionally, specify a session to get teams for that session.
+message GetTeamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Meet meet = 2;
+  ListRequestOptions list_request_options = 3;
+  optional Session session = 4;
+}
+
+// Response of all teams.
+message GetTeamListResponse {
+  Teams teams = 1;
+}
+
+// Service
+
+service CadenceScorifyService {
+  rpc GetGymnasticsEventList (GetGymnasticsEventListRequest) returns (GetGymnasticsEventListResponse);
+  rpc GetStreamList (GetStreamListRequest) returns (GetStreamListResponse);
 }
