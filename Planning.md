@@ -19,7 +19,9 @@ TeamEventScores
 
 ## List of Done Methods:
 Athlete List - R
-Athlete - CRUD
+Athlete - CRUDA
+Club List - R
+Club - CRUDA
 GymnasticsEventList - R
 StreamList - R
 LevelList - R

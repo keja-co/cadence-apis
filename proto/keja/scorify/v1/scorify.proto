@@ -432,6 +432,74 @@ message ArchiveAthleteResponse {
   Athlete athlete = 1;
 }
 
+// Request a list of all clubs.
+message GetClubListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all clubs.
+message GetClubListResponse {
+  Clubs clubs = 1;
+}
+
+// Request a single club.
+message GetClubByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single club.
+message GetClubByIdResponse {
+  Club club = 1;
+}
+
+// Update a single club.
+message UpdateClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Club club = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single club.
+message UpdateClubResponse {
+  Club club = 1;
+}
+
+// Create a single club.
+message CreateClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Club club = 2;
+}
+
+// Response of a single club.
+message CreateClubResponse {
+  Club club = 1;
+}
+
+// Delete a single club.
+message DeleteClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+}
+
+// Response of a single club.
+message DeleteClubResponse {
+  Club club = 1;
+}
+
+// Archive a single club.
+message ArchiveClubRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string club_id = 2;
+}
+
+// Response of a single club.
+message ArchiveClubResponse {
+  Club club = 1;
+}
+
 // Request a list of all gymnastics events.
 message GetGymnasticsEventListRequest {
   keja.tenants.v1.Tenant tenant = 1;
