@@ -704,6 +704,29 @@ message ArchiveIndividualAttemptEventScoreResponse {
   IndividualAttemptEventScore individual_attempt_event_score = 1;
 }
 
+// Request a list of all IndividualEventScores.
+message GetIndividualEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualEventScores.
+message GetIndividualEventScoreListResponse {
+  IndividualEventScores individual_event_scores = 1;
+}
+
+// Request a single IndividualEventScore.
+message GetIndividualEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScore.
+message GetIndividualEventScoreByIdResponse {
+  IndividualEventScore individual_event_score = 1;
+}
+
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;

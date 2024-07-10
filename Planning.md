@@ -28,6 +28,9 @@ GymnasticsEventList - R
 GymnasticsEvent - CRUDA
 IndividualAttemptEventScoresList - R
 IndividualAttemptEventScores - CRUDA
+IndividualEventScoresList - R
+IndividualEventScores - R
+Judge List -
 StreamList - R
 LevelList - R
 MeetList - R
