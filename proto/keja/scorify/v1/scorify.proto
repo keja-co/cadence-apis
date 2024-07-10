@@ -1069,8 +1069,6 @@ message ArchiveRotationResponse {
   Rotation rotation = 1;
 }
 
-
-
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
@@ -1080,6 +1078,75 @@ message GetStreamListRequest {
 // Response of all streams.
 message GetStreamListResponse {
   Streams streams = 1;
+}
+
+// Request a list of all sessions.
+// Highly consider using ListRequestOptions to filter for a specific meet.
+message GetSessionListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 3;
+}
+
+// Response of all sessions.
+message GetSessionListResponse {
+  Sessions sessions = 1;
+}
+
+// Request a single session.
+message GetSessionByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single session.
+message GetSessionByIdResponse {
+  Session session = 1;
+}
+
+// Update a single session.
+message UpdateSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Session session = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single session.
+message UpdateSessionResponse {
+  Session session = 1;
+}
+
+// Create a single session.
+message CreateSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Session session = 2;
+}
+
+// Response of a single session.
+message CreateSessionResponse {
+  Session session = 1;
+}
+
+// Delete a single session.
+message DeleteSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+}
+
+// Response of a single session.
+message DeleteSessionResponse {
+  Session session = 1;
+}
+
+// Archive a single session.
+message ArchiveSessionRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string session_id = 2;
+}
+
+// Response of a single session.
+message ArchiveSessionResponse {
+  Session session = 1;
 }
 
 // Request a list of all teams.
