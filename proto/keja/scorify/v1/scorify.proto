@@ -727,6 +727,74 @@ message GetIndividualEventScoreByIdResponse {
   IndividualEventScore individual_event_score = 1;
 }
 
+// Request a list of all Judges.
+message GetJudgeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all Judges.
+message GetJudgeListResponse {
+  Judges judges = 1;
+}
+
+// Request a single Judge.
+message GetJudgeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Judge.
+message GetJudgeByIdResponse {
+  Judge judge = 1;
+}
+
+// Update a single Judge.
+message UpdateJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Judge judge = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single Judge.
+message UpdateJudgeResponse {
+  Judge judge = 1;
+}
+
+// Create a single Judge.
+message CreateJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Judge judge = 2;
+}
+
+// Response of a single Judge.
+message CreateJudgeResponse {
+  Judge judge = 1;
+}
+
+// Delete a single Judge.
+message DeleteJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+}
+
+// Response of a single Judge.
+message DeleteJudgeResponse {
+  Judge judge = 1;
+}
+
+// Archive a single Judge.
+message ArchiveJudgeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string judge_id = 2;
+}
+
+// Response of a single Judge.
+message ArchiveJudgeResponse {
+  Judge judge = 1;
+}
+
 // Request a list of all streams.
 message GetStreamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
