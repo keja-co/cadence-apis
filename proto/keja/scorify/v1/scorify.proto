@@ -3,7 +3,7 @@ syntax = "proto3";
 package keja.scorify.v1;
 
 import "keja/tenants/v1/tenants.proto";
-// import "google/protobuf/field_mask.proto";
+import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
 enum GymnasticsEventType {
@@ -32,6 +32,10 @@ message GymnasticsEvent {
   string event_name = 4;
   optional string event_description = 5;
   optional string event_code = 6; 
+}
+
+message GymnasticsEvents {
+  repeated GymnasticsEvent gymnastics_events = 1;
 }
 
 enum StatusEnum {
