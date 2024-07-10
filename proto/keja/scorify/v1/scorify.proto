@@ -1207,18 +1207,94 @@ message ArchiveStreamResponse {
 }
 
 // Request a list of all teams.
-// Requires a meet to be specified.
-// Optionally, specify a session to get teams for that session.
 message GetTeamListRequest {
   keja.tenants.v1.Tenant tenant = 1;
-  Meet meet = 2;
-  ListRequestOptions list_request_options = 3;
-  optional Session session = 4;
+  ListRequestOptions list_request_options = 2;
 }
 
 // Response of all teams.
 message GetTeamListResponse {
   Teams teams = 1;
+}
+
+// Request a single team.
+message GetTeamByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team.
+message GetTeamByIdResponse {
+  Team team = 1;
+}
+
+// Update a single team.
+message UpdateTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Team team = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team.
+message UpdateTeamResponse {
+  Team team = 1;
+}
+
+// Create a single team.
+message CreateTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Team team = 2;
+}
+
+// Response of a single team.
+message CreateTeamResponse {
+  Team team = 1;
+}
+
+// Delete a single team.
+message DeleteTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+}
+
+// Response of a single team.
+message DeleteTeamResponse {
+  Team team = 1;
+}
+
+// Archive a single team.
+message ArchiveTeamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_id = 2;
+}
+
+// Response of a single team.
+message ArchiveTeamResponse {
+  Team team = 1;
+}
+
+// Request a list of all team event scores.
+message GetTeamEventScoreListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all team event scores.
+message GetTeamEventScoreListResponse {
+  TeamEventScores team_event_scores = 1;
+}
+
+// Request a single team event score.
+message GetTeamEventScoreByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_event_score_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single team event score.
+message GetTeamEventScoreByIdResponse {
+  TeamEventScore team_event_score = 1;
 }
 
 // Service

@@ -45,4 +45,7 @@ SessionList - R
 Session - CRUDA
 StreamList - R
 Stream - CRUDA
-TeamList - R  
+TeamList - R
+Team - CRUDA
+TeamEventScores - R
+TeamEventScores - R
