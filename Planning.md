@@ -14,6 +14,7 @@ Levels
 Meets
 RotationEvents
 Rotations
+Sessions
 Streams
 TeamEventScores 
 
@@ -40,6 +41,8 @@ RotationEventsList - R
 RotationEvents - CRUDA
 RotationsList - R
 Rotations - CRUDA
+SessionList - R
+Session - CRUDA
 StreamList - R
-MeetList - R
+Stream - CRUDA
 TeamList - R  

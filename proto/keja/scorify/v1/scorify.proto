@@ -1069,17 +1069,6 @@ message ArchiveRotationResponse {
   Rotation rotation = 1;
 }
 
-// Request a list of all streams.
-message GetStreamListRequest {
-  keja.tenants.v1.Tenant tenant = 1;
-  ListRequestOptions list_request_options = 2;
-}
-
-// Response of all streams.
-message GetStreamListResponse {
-  Streams streams = 1;
-}
-
 // Request a list of all sessions.
 // Highly consider using ListRequestOptions to filter for a specific meet.
 message GetSessionListRequest {
@@ -1147,6 +1136,74 @@ message ArchiveSessionRequest {
 // Response of a single session.
 message ArchiveSessionResponse {
   Session session = 1;
+}
+
+// Request a list of all streams.
+message GetStreamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all streams.
+message GetStreamListResponse {
+  Streams streams = 1;
+}
+
+// Request a single stream.
+message GetStreamByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single stream.
+message GetStreamByIdResponse {
+  Stream stream = 1;
+}
+
+// Update a single stream.
+message UpdateStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Stream stream = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single stream.
+message UpdateStreamResponse {
+  Stream stream = 1;
+}
+
+// Create a single stream.
+message CreateStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Stream stream = 2;
+}
+
+// Response of a single stream.
+message CreateStreamResponse {
+  Stream stream = 1;
+}
+
+// Delete a single stream.
+message DeleteStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+}
+
+// Response of a single stream.
+message DeleteStreamResponse {
+  Stream stream = 1;
+}
+
+// Archive a single stream.
+message ArchiveStreamRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string stream_id = 2;
+}
+
+// Response of a single stream.
+message ArchiveStreamResponse {
+  Stream stream = 1;
 }
 
 // Request a list of all teams.
