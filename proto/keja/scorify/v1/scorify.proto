@@ -795,17 +795,6 @@ message ArchiveJudgeResponse {
   Judge judge = 1;
 }
 
-// Request a list of all streams.
-message GetStreamListRequest {
-  keja.tenants.v1.Tenant tenant = 1;
-  ListRequestOptions list_request_options = 2;
-}
-
-// Response of all streams.
-message GetStreamListResponse {
-  Streams streams = 1;
-}
-
 // Request a list of all levels.
 // Optionally, specify a stream to get levels for that stream.
 message GetLevelListRequest {
@@ -817,6 +806,74 @@ message GetLevelListRequest {
 // Response of all levels.
 message GetLevelListResponse {
   Levels levels = 1;
+}
+
+// Request a single level.
+message GetLevelByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single level.
+message GetLevelByIdResponse {
+  Level level = 1;
+}
+
+// Update a single level.
+message UpdateLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Level level = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single level.
+message UpdateLevelResponse {
+  Level level = 1;
+}
+
+// Create a single level.
+message CreateLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Level level = 2;
+}
+
+// Response of a single level.
+message CreateLevelResponse {
+  Level level = 1;
+}
+
+// Delete a single level.
+message DeleteLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+}
+
+// Response of a single level.
+message DeleteLevelResponse {
+  Level level = 1;
+}
+
+// Archive a single level.
+message ArchiveLevelRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string level_id = 2;
+}
+
+// Response of a single level.
+message ArchiveLevelResponse {
+  Level level = 1;
+}
+
+// Request a list of all streams.
+message GetStreamListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all streams.
+message GetStreamListResponse {
+  Streams streams = 1;
 }
 
 // Request a list of all competitions.

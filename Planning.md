@@ -30,8 +30,10 @@ IndividualAttemptEventScoresList - R
 IndividualAttemptEventScores - CRUDA
 IndividualEventScoresList - R
 IndividualEventScores - R
-Judge List -
-StreamList - R
+Judge List - R
+Judge - CRUDA
 LevelList - R
+Level - CRUDA
+StreamList - R
 MeetList - R
 TeamList - R  
