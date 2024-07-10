@@ -500,6 +500,74 @@ message ArchiveClubResponse {
   Club club = 1;
 }
 
+// Request a list of all coaches.
+message GetCoachListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all coaches.
+message GetCoachListResponse {
+  Coaches coaches = 1;
+}
+
+// Request a single coach.
+message GetCoachByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single coach.
+message GetCoachByIdResponse {
+  Coach coach = 1;
+}
+
+// Update a single coach.
+message UpdateCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Coach coach = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single coach.
+message UpdateCoachResponse {
+  Coach coach = 1;
+}
+
+// Create a single coach.
+message CreateCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  Coach coach = 2;
+}
+
+// Response of a single coach.
+message CreateCoachResponse {
+  Coach coach = 1;
+}
+
+// Delete a single coach.
+message DeleteCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+}
+
+// Response of a single coach.
+message DeleteCoachResponse {
+  Coach coach = 1;
+}
+
+// Archive a single coach.
+message ArchiveCoachRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string coach_id = 2;
+}
+
+// Response of a single coach.
+message ArchiveCoachResponse {
+  Coach coach = 1;
+}
+
 // Request a list of all gymnastics events.
 message GetGymnasticsEventListRequest {
   keja.tenants.v1.Tenant tenant = 1;
@@ -509,6 +577,63 @@ message GetGymnasticsEventListRequest {
 // Response of all gymnastics events.
 message GetGymnasticsEventListResponse {
   GymnasticsEvents gymnastics_events = 1;
+}
+
+// Request a single gymnastics event.
+message GetGymnasticsEventByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single gymnastics event.
+message GetGymnasticsEventByIdResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Update a single gymnastics event.
+message UpdateGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  GymnasticsEvent gymnastics_event = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single gymnastics event.
+message UpdateGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Create a single gymnastics event.
+message CreateGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  GymnasticsEvent gymnastics_event = 2;
+}
+
+// Response of a single gymnastics event.
+message CreateGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Delete a single gymnastics event.
+message DeleteGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+}
+
+// Response of a single gymnastics event.
+message DeleteGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
+}
+
+// Archive a single gymnastics event.
+message ArchiveGymnasticsEventRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string gymnastics_event_id = 2;
+}
+
+// Response of a single gymnastics event.
+message ArchiveGymnasticsEventResponse {
+  GymnasticsEvent gymnastics_event = 1;
 }
 
 // Request a list of all streams.
