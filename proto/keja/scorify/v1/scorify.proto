@@ -727,6 +727,74 @@ message GetIndividualEventScoreByIdResponse {
   IndividualEventScore individual_event_score = 1;
 }
 
+// Request a list of all IndividualEventScoreTypes.
+message GetIndividualScoreCalculationTypeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all IndividualEventScoreTypes.
+message GetIndividualScoreCalculationTypeListResponse {
+  IndividualScoreCalculationTypes individual_score_calculation_types = 1;
+}
+
+// Request a single IndividualEventScoreType.
+message GetIndividualScoreCalculationTypeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScoreType.
+message GetIndividualScoreCalculationTypeByIdResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Update a single IndividualEventScoreType.
+message UpdateIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualScoreCalculationType individual_score_calculation_type = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single IndividualEventScoreType.
+message UpdateIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Create a single IndividualEventScoreType.
+message CreateIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  IndividualScoreCalculationType individual_score_calculation_type = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message CreateIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Delete a single IndividualEventScoreType.
+message DeleteIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message DeleteIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
+// Archive a single IndividualEventScoreType.
+message ArchiveIndividualScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string individual_score_calculation_type_id = 2;
+}
+
+// Response of a single IndividualEventScoreType.
+message ArchiveIndividualScoreCalculationTypeResponse {
+  IndividualScoreCalculationType individual_score_calculation_type = 1;
+}
+
 // Request a list of all Judges.
 message GetJudgeListRequest {
   keja.tenants.v1.Tenant tenant = 1;
@@ -1297,6 +1365,74 @@ message GetTeamEventScoreByIdResponse {
   TeamEventScore team_event_score = 1;
 }
 
+// Request a list of all TeamScoreCalculationType
+message GetTeamScoreCalculationTypeListRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  ListRequestOptions list_request_options = 2;
+}
+
+// Response of all TeamScoreCalculationType
+message GetTeamScoreCalculationTypeListResponse {
+  TeamScoreCalculationTypes team_score_calculation_types = 1;
+}
+
+// Request a single TeamScoreCalculationType
+message GetTeamScoreCalculationTypeByIdRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single TeamScoreCalculationType
+message GetTeamScoreCalculationTypeByIdResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Update a single TeamScoreCalculationType
+message UpdateTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  TeamScoreCalculationType team_score_calculation_type = 2;
+  GeneralRequestOptions general_request_options = 3;
+}
+
+// Response of a single TeamScoreCalculationType
+message UpdateTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Create a single TeamScoreCalculationType
+message CreateTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  TeamScoreCalculationType team_score_calculation_type = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message CreateTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Delete a single TeamScoreCalculationType
+message DeleteTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message DeleteTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
+// Archive a single TeamScoreCalculationType
+message ArchiveTeamScoreCalculationTypeRequest {
+  keja.tenants.v1.Tenant tenant = 1;
+  string team_score_calculation_type_id = 2;
+}
+
+// Response of a single TeamScoreCalculationType
+message ArchiveTeamScoreCalculationTypeResponse {
+  TeamScoreCalculationType team_score_calculation_type = 1;
+}
+
 // Service
 
 service CadenceScorifyService {
@@ -1343,6 +1479,14 @@ service CadenceScorifyService {
   // IndividualEventScore
   rpc GetIndividualEventScoreList(GetIndividualEventScoreListRequest) returns (GetIndividualEventScoreListResponse);
   rpc GetIndividualEventScoreById(GetIndividualEventScoreByIdRequest) returns (GetIndividualEventScoreByIdResponse);
+
+  // IndividualScoreCalculationType
+  rpc GetIndividualScoreCalculationTypeList(GetIndividualScoreCalculationTypeListRequest) returns (GetIndividualScoreCalculationTypeListResponse);
+  rpc GetIndividualScoreCalculationTypeById(GetIndividualScoreCalculationTypeByIdRequest) returns (GetIndividualScoreCalculationTypeByIdResponse);
+  rpc UpdateIndividualScoreCalculationType(UpdateIndividualScoreCalculationTypeRequest) returns (UpdateIndividualScoreCalculationTypeResponse);
+  rpc CreateIndividualScoreCalculationType(CreateIndividualScoreCalculationTypeRequest) returns (CreateIndividualScoreCalculationTypeResponse);
+  rpc DeleteIndividualScoreCalculationType(DeleteIndividualScoreCalculationTypeRequest) returns (DeleteIndividualScoreCalculationTypeResponse);
+  rpc ArchiveIndividualScoreCalculationType(ArchiveIndividualScoreCalculationTypeRequest) returns (ArchiveIndividualScoreCalculationTypeResponse);
 
   // Judge
   rpc GetJudgeList(GetJudgeListRequest) returns (GetJudgeListResponse);
@@ -1411,4 +1555,12 @@ service CadenceScorifyService {
   // TeamEventScore
   rpc GetTeamEventScoreList(GetTeamEventScoreListRequest) returns (GetTeamEventScoreListResponse);
   rpc GetTeamEventScoreById(GetTeamEventScoreByIdRequest) returns (GetTeamEventScoreByIdResponse);
+
+  // TeamScoreCalculationType
+  rpc GetTeamScoreCalculationTypeList(GetTeamScoreCalculationTypeListRequest) returns (GetTeamScoreCalculationTypeListResponse);
+  rpc GetTeamScoreCalculationTypeById(GetTeamScoreCalculationTypeByIdRequest) returns (GetTeamScoreCalculationTypeByIdResponse);
+  rpc UpdateTeamScoreCalculationType(UpdateTeamScoreCalculationTypeRequest) returns (UpdateTeamScoreCalculationTypeResponse);
+  rpc CreateTeamScoreCalculationType(CreateTeamScoreCalculationTypeRequest) returns (CreateTeamScoreCalculationTypeResponse);
+  rpc DeleteTeamScoreCalculationType(DeleteTeamScoreCalculationTypeRequest) returns (DeleteTeamScoreCalculationTypeResponse);
+  rpc ArchiveTeamScoreCalculationType(ArchiveTeamScoreCalculationTypeRequest) returns (ArchiveTeamScoreCalculationTypeResponse);
 }

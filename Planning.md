@@ -9,6 +9,7 @@ Coaches
 GymnasticsEvents
 IndividualAttemptEventScores
 IndividualEventScores
+IndividualScoreCalculationType
 Judges
 Levels
 Meets
@@ -16,7 +17,8 @@ RotationEvents
 Rotations
 Sessions
 Streams
-TeamEventScores 
+TeamEventScores
+TeamScoreCalculationType
 
 ## List of Done Methods:
 Athlete List - R
@@ -29,6 +31,8 @@ GymnasticsEventList - R
 GymnasticsEvent - CRUDA
 IndividualAttemptEventScoresList - R
 IndividualAttemptEventScores - CRUDA
+IndividualScoreCalculationTypeList - R
+IndividualScoreCalculationType - CRUDA
 IndividualEventScoresList - R
 IndividualEventScores - R
 Judge List - R
@@ -49,3 +53,5 @@ TeamList - R
 Team - CRUDA
 TeamEventScores - R
 TeamEventScores - R
+TeamScoreCalculationTypeList - R
+TeamScoreCalculationType - CRUDA
