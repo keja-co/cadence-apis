@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+package keja.hrms.v1;
+
+import "keja/tenants/v1/tenants.proto";
+import "keja/common/v1/common.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+
+// Enums
+enum Gender {
+  GENDER_UNSPECIFIED = 0;
+  MALE = 1;
+  FEMALE = 2;
+  OTHER = 3;
+}
+
+enum EmploymentStatus {
+  STATUS_UNSPECIFIED = 0;
+  FULL_TIME = 1;
+  PART_TIME = 2;
+  CASUAL = 3;
+  CONTRACT = 4;
+  INTERN = 5;
+  TEMPORARY = 6;
+}
+
+// Messages
+message Employee {
+  string id = 1;
+  keja.common.v1.Metadata metadata = 2;
+  string first_name = 3;
+  string last_name = 4;
+  Gender gender = 5;
+  string date_of_birth = 6;
+  string email = 7;
+  string phone_number = 8;
+  EmploymentStatus employment_status = 9;
+  string start_date = 10;
+  string end_date = 11;
+  string pronouns = 12;
+}
+
+message EmployeeList {
+  repeated Employee employees = 1;
+}
+
+message Certification {
+  string id = 1;
+  keja.common.v1.Metadata metadata = 2;
+  string employee_id = 3;
+  string name = 4;
+  string issuing_organisation = 5;
+  string issue_date = 6;
+  string expiry_date = 7;
+  string cert_media_uri = 8;
+}
+
+message CertificationList {
+  repeated Certification certifications = 1;
+}
+
+// Request/Response Messages
+
+// Employees
+message GetEmployeesRequest {
+}
+
+message GetEmployeesResponse {
+  EmployeeList employees = 1;
+}
+
+message GetEmployeeByIdRequest {
+  string id = 1;
+}
+
+message GetEmployeeByIdResponse {
+  Employee employee = 1;
+}
+
+message CreateEmployeeRequest {
+  Employee employee = 1;
+}
+
+message CreateEmployeeResponse {
+  Employee employee = 1;
+}
+
+message UpdateEmployeeRequest {
+  Employee employee = 1;
+}
+
+message UpdateEmployeeResponse {
+  Employee employee = 1;
+}
+
+message DeleteEmployeeRequest {
+  string id = 1;
+}
+
+message DeleteEmployeeResponse {
+}
+
+message ArchiveEmployeeRequest {
+  Employee employee = 1;
+}
+
+message ArchiveEmployeeResponse {
+}
+
+// Certifications
+
+message GetCertificationsRequest {
+}
+
+message GetCertificationsResponse {
+  CertificationList certifications = 1;
+}
+
+message GetCertificationByIdRequest {
+  string id = 1;
+}
+
+message GetCertificationByIdResponse {
+  Certification certification = 1;
+}
+
+message CreateCertificationRequest {
+  Certification certification = 1;
+}
+
+message CreateCertificationResponse {
+  Certification certification = 1;
+}
+
+message UpdateCertificationRequest {
+  Certification certification = 1;
+}
+
+message UpdateCertificationResponse {
+  Certification certification = 1;
+}
+
+message DeleteCertificationRequest {
+  string id = 1;
+}
+
+message DeleteCertificationResponse {
+}
+
+message ArchiveCertificationRequest {
+  Certification certification = 1;
+}
+
+message ArchiveCertificationResponse {
+}
+
+// Services
+service EmployeeService {
+  rpc GetEmployees(GetEmployeesRequest) returns (GetEmployeesResponse);
+  rpc GetEmployeeById(GetEmployeeByIdRequest) returns (GetEmployeeByIdResponse);
+  rpc CreateEmployee(CreateEmployeeRequest) returns (CreateEmployeeResponse);
+  rpc UpdateEmployee(UpdateEmployeeRequest) returns (UpdateEmployeeResponse);
+  rpc DeleteEmployee(DeleteEmployeeRequest) returns (DeleteEmployeeResponse);
+  rpc ArchiveEmployee(ArchiveEmployeeRequest) returns (ArchiveEmployeeResponse);
+}
+
+service CertificationService {
+  rpc GetCertifications(GetCertificationsRequest) returns (GetCertificationsResponse);
+  rpc GetCertificationById(GetCertificationByIdRequest) returns (GetCertificationByIdResponse);
+  rpc CreateCertification(CreateCertificationRequest) returns (CreateCertificationResponse);
+  rpc UpdateCertification(UpdateCertificationRequest) returns (UpdateCertificationResponse);
+  rpc DeleteCertification(DeleteCertificationRequest) returns (DeleteCertificationResponse);
+  rpc ArchiveCertification(ArchiveCertificationRequest) returns (ArchiveCertificationResponse);
+}

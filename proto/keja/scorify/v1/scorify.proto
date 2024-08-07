@@ -3,6 +3,7 @@ syntax = "proto3";
 package keja.scorify.v1;
 
 import "keja/tenants/v1/tenants.proto";
+import "keja/common/v1/common.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -38,22 +39,6 @@ message GymnasticsEvents {
   repeated GymnasticsEvent gymnastics_events = 1;
 }
 
-enum StatusEnum {
-  STATUS_ENUM_UNSPECIFIED = 0;
-  STATUS_ENUM_ACTIVE = 1;
-  STATUS_ENUM_ARCHIVED = 2;
-}
-
-message Status {
-  Status status = 1;
-} 
-
-message Metadata {
-  Status status = 1;
-  google.protobuf.Timestamp created_at = 2;
-  google.protobuf.Timestamp updated_at = 3;
-}
-
 // A Stream could also be called a "Competition Series" or "Program"
 // The end user can choose how they utilise this category
 // Australian Clubs may like to use "WAG State", "WAG Nationals", "AGC", "Futures League" etc.
@@ -63,7 +48,7 @@ message Stream {
   optional string stream_code = 3;
   string stream_name = 4; 
   Levels stream_levels = 5;
-  Metadata metadata = 6;
+  keja.common.v1.Metadata metadata = 6;
 }
 
 message Streams {
@@ -76,7 +61,7 @@ message Level {
   keja.tenants.v1.Tenant tenant = 2;
   optional string level_code = 3;
   string level_name = 4;
-  Metadata metadata = 5;
+  keja.common.v1.Metadata metadata = 5;
 }
 
 message Levels {
@@ -89,7 +74,7 @@ message Club {
   keja.tenants.v1.Tenant tenant = 2;
   optional string club_code = 3;
   string club_name = 4;
-  Metadata metadata = 5;
+  keja.common.v1.Metadata metadata = 5;
 }
 
 message Clubs {
@@ -107,7 +92,7 @@ message PersonContactDetails {
   optional string email = 1;
   optional string phone_number = 2;
   optional string address = 3;
-  Metadata metadata = 4;
+  keja.common.v1.Metadata metadata = 4;
 }
 
 // A judge is a person who is responsible for scoring the athletes.
@@ -118,7 +103,7 @@ message Judge {
   Clubs clubs = 3;
   PersonName judge_name = 4;
   PersonContactDetails contact_details = 5;
-  Metadata metadata = 6;
+  keja.common.v1.Metadata metadata = 6;
 }
 
 message Judges {
@@ -132,7 +117,7 @@ message Coach {
   Club club = 3;
   PersonName coach_name = 4;
   PersonContactDetails contact_details = 5;
-  Metadata metadata = 6;
+  keja.common.v1.Metadata metadata = 6;
 }
 
 message Coaches {
@@ -148,7 +133,7 @@ message Athlete {
   PersonName athlete_name = 5;
   PersonContactDetails contact_details = 6;
   Levels athlete_levels = 7;
-  Metadata metadata = 8;
+  keja.common.v1.Metadata metadata = 8;
 }
 
 message Athletes {
@@ -164,7 +149,7 @@ message Meet {
   google.protobuf.Timestamp meet_end_date_time = 5;
   string meet_location = 6;
   Sessions meet_sessions = 7;
-  Metadata metadata = 8;
+  keja.common.v1.Metadata metadata = 8;
 }
 
 message Meets {
@@ -177,7 +162,7 @@ message Team {
   keja.tenants.v1.Tenant tenant = 2;
   string team_name = 3;
   Athletes team_athletes = 4;
-  Metadata metadata = 5;
+  keja.common.v1.Metadata metadata = 5;
 }
 
 message Teams {
@@ -193,7 +178,7 @@ message Session {
   google.protobuf.Timestamp session_end_date_time = 5;
   Rotations session_rotations = 6;
   Teams session_teams = 7;
-  Metadata metadata = 8;
+  keja.common.v1.Metadata metadata = 8;
 }
 
 message Sessions {
@@ -215,7 +200,7 @@ message Rotation {
   // If further identification is required, a rotation name can be used. This is a human-readable name for the rotation.
   optional string rotation_name = 4;
   RotationEvents session_events = 5;
-  Metadata metadata = 6;
+  keja.common.v1.Metadata metadata = 6;
 }
 
 message Rotations {
@@ -242,7 +227,7 @@ message RotationEvent {
   keja.tenants.v1.Tenant tenant = 2;
   GymnasticsEvent gymnastics_event = 5;
   RotationParticipants rotation_participants = 6;
-  Metadata metadata = 7;
+  keja.common.v1.Metadata metadata = 7;
 }
 
 message RotationEvents {
@@ -290,7 +275,7 @@ message IndividualAttemptEventScore {
   // The score value. This is a float value, and can be a decimal number.
   float score_value = 7;
   optional string score_notes = 8;
-  Metadata metadata = 9;
+  keja.common.v1.Metadata metadata = 9;
 }
 
 message IndividualAttemptEventScores {
@@ -310,7 +295,7 @@ message IndividualEventScore {
   float score_value = 5;
   IndividualScoreCalculationType score_calculation_type = 6;
   IndividualAttemptEventScores individual_attempt_event_scores = 7;
-  Metadata metadata = 8;
+  keja.common.v1.Metadata metadata = 8;
 }
 
 message IndividualEventScores {
@@ -330,7 +315,7 @@ message TeamEventScore {
   optional string score_notes = 6;
   TeamScoreCalculationType score_calculation_type = 7;
   IndividualEventScores individual_event_scores = 8;
-  Metadata metadata = 9;
+  keja.common.v1.Metadata metadata = 9;
 }
 
 message TeamEventScores {

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package keja.common.v1;
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "keja/tenants/v1/tenants.proto";
+
+enum StatusEnum {
+  STATUS_ENUM_UNSPECIFIED = 0;
+  STATUS_ENUM_ACTIVE = 1;
+  STATUS_ENUM_ARCHIVED = 2;
+}
+
+message Status {
+  Status status = 1;
+}
+
+message Metadata {
+  Status status = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  keja.tenants.v1.Tenant tenant = 4;
+}
