@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package keja.hr.employee.v1;
 
-import "keja/tenants/v1/tenants.proto";
 //import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "keja/common/address/v1/address.proto";
+import "keja/tenants/v1/tenants.proto";
 
 // An employee
 message Employee {
