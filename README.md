@@ -6,6 +6,7 @@ ConnectRPC API Protobuf Files for Cadence APIs
 ## Available APIs
 - Cadence Users
 - Cadence Scorify
+- Cadence HCM and HRIS (via hr and shifts packages)
 
 ## TODO's
 - Inline with best practices, include some form of version field. [Link](https://protobuf.dev/programming-guides/api/#include-version-field)

@@ -5,7 +5,7 @@ package keja.shifts.timeclock.v1;
 import "keja/tenants/v1/tenants.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "keja/hr/v1/employee.proto";
+import "keja/hr/employee/v1/employee.proto";
 
 // Time clock status
 enum TimeClockStatus {

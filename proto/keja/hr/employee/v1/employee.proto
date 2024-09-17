@@ -3,14 +3,14 @@ syntax = "proto3";
 package keja.hr.employee.v1;
 
 import "keja/tenants/v1/tenants.proto";
-import "google/protobuf/field_mask.proto";
+//import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "keja/common/v1/address.proto";
+import "keja/common/address/v1/address.proto";
 
 // An employee
 message Employee {
   // The tenant ID
-  string tenant_id = 1;
+  keja.tenants.v1.Tenant tenant = 1;
   // The employee ID
   string employee_id = 2;
   // The employee's first name
