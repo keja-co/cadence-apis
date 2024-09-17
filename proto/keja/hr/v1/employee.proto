@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package keja.hr.employee.v1;
+
+import "keja/tenants/v1/tenants.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "keja/common/v1/address.proto";
+
+// An employee
+message Employee {
+  // The tenant ID
+  string tenant_id = 1;
+  // The employee ID
+  string employee_id = 2;
+  // The employee's first name
+  string first_name = 3;
+  // The employee's last name
+  string last_name = 4;
+  // The employee's email address
+  string email = 5;
+  // The employee's phone number
+  string phone = 6;
+  // The employee's date of birth
+  google.protobuf.Timestamp date_of_birth = 7;
+  // The employee's date of hire
+  google.protobuf.Timestamp date_of_hire = 8;
+  // The employee's date of termination
+  google.protobuf.Timestamp date_of_termination = 9;
+  // The employee's job title
+  string job_title = 10;
+  // The employee's department
+  string department = 11;
+  // The employee's manager
+  string manager = 12;
+  // The employee's status
+  EmployeeStatus status = 13;
+  // The employee's address
+  keja.common.address.v1.Address address = 14;
+  // The employee's emergency contacts
+  repeated EmergencyContact emergency_contact = 15;
+}
+
+// Employee status
+enum EmployeeStatus {
+  // Unspecified status
+  EMPLOYEE_STATUS_UNSPECIFIED = 0;
+  // The employee is active
+  EMPLOYEE_STATUS_ACTIVE = 1;
+  // The employee is on leave
+  EMPLOYEE_STATUS_ON_LEAVE = 2;
+  // The employee is terminated
+  EMPLOYEE_STATUS_TERMINATED = 3;
+}
+
+// An emergency contact for an employee
+message EmergencyContact {
+  // The emergency contact's first name
+  string first_name = 1;
+  // The emergency contact's last name
+  string last_name = 2;
+  // The emergency contact's phone number
+  string phone = 3;
+  // The emergency contact's relationship to the employee
+  string relationship = 4;
+}
