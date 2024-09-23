@@ -10,3 +10,7 @@ ConnectRPC API Protobuf Files for Cadence APIs
 
 ## TODO's
 - Inline with best practices, include some form of version field. [Link](https://protobuf.dev/programming-guides/api/#include-version-field)
+
+## Notes:
+- All requests **must** specify a field mask. This is to ensure that the client is aware of the fields that are being returned. This is to prevent unnecessary data transfer and to ensure that the client is aware of the fields that are being returned. [Link](https://protobuf.dev/reference/protobuf/google.protobuf/#field-mask)
+- Wildcard field masks are not supported. You must explicitly specify the fields that you want to return.
