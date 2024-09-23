@@ -10,8 +10,7 @@ message Tenant {
   string tenant_name = 3;
 }
 
-message InternalTenantPageToken {
-}
+message InternalTenantPageToken {}
 
 message TenantListRequestOptions {
   google.protobuf.FieldMask field_mask = 1;
@@ -40,6 +39,6 @@ message GetTenantResponse {
 }
 
 service TenantService {
-  rpc GetTenant (GetTenantRequest) returns (GetTenantResponse);
-  rpc GetTenantListPaged (GetTenantListPagedRequest) returns (GetTenantListPagedResponse);
+  rpc GetTenant(GetTenantRequest) returns (GetTenantResponse);
+  rpc GetTenantListPaged(GetTenantListPagedRequest) returns (GetTenantListPagedResponse);
 }

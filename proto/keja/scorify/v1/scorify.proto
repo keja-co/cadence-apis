@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package keja.scorify.v1;
 
-import "keja/tenants/v1/tenants.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
+import "keja/tenants/v1/tenants.proto";
 
 enum GymnasticsEventType {
   GYMNASTICS_EVENT_TYPE_UNSPECIFIED = 0;
@@ -31,7 +31,7 @@ message GymnasticsEvent {
   GymnasticsEventType event_type = 3;
   string event_name = 4;
   optional string event_description = 5;
-  optional string event_code = 6; 
+  optional string event_code = 6;
 }
 
 message GymnasticsEvents {
@@ -46,7 +46,7 @@ enum StatusEnum {
 
 message Status {
   Status status = 1;
-} 
+}
 
 message Metadata {
   Status status = 1;
@@ -61,7 +61,7 @@ message Stream {
   string id = 1;
   keja.tenants.v1.Tenant tenant = 2;
   optional string stream_code = 3;
-  string stream_name = 4; 
+  string stream_name = 4;
   Levels stream_levels = 5;
   Metadata metadata = 6;
 }
@@ -297,7 +297,6 @@ message IndividualAttemptEventScores {
   repeated IndividualAttemptEventScore individual_attempt_event_scores = 1;
 }
 
-
 // This is the 'total' score for an individual athlete for an event.
 // This takes into account multiple attempts, multiple judges, etc.
 // For a one jude, one attempt competition, this will be the same as IndividualAttemptScore.
@@ -355,7 +354,6 @@ message ListRequestOptions {
   google.protobuf.FieldMask field_mask = 1;
   optional string page_token = 2;
   optional FilterRequestOptions filter_request_options = 3;
-
 }
 
 // Options for general/individual requests.
